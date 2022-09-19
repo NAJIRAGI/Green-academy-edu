@@ -1,0 +1,51 @@
+package gesipan;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class gesipanDao {
+	private jdbcUtil ju;
+
+	public gesipanDao() {
+		ju = jdbcUtil.getInstance();
+	}
+	
+	// #삽입 (C-create)
+	public int insert(gesipanVo gvo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String query = "INSERT INTO gesipan VALUES (GESIPAN_SEQ.nextval,?,?,?,sysdate,0)";
+		
+		int ret = -1;
+		try {
+			con = ju.getConnection();
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, gvo.getTitle());
+			pstmt.setString(2, gvo.getWriter());
+			pstmt.setString(3, gvo.getContent());
+			ret = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+ 		} finally {
+ 			if (pstmt != null) {
+ 				try {
+ 					pstmt.close();
+ 				} catch (SQLException e) {
+ 					e.printStackTrace();
+ 				}
+ 			}
+ 			
+ 			if (con != null) {
+ 				try {
+ 					con.close();
+ 				} catch (SQLException e) {
+ 					e.printStackTrace();
+ 				}
+ 			}
+ 		}
+		
+		return ret;
+	}
+}

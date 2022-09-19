@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="gesipan.*,java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	gesipanDao gdao = new gesipanDao();
+	List<gesipanVo> ls = gdao.selectAll();
+	pageContext.setAttribute("ls", ls);
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>게시글 목록</h2>
+	<table border=1>
+		<tr>
+			<th>no</th>
+			<th>title</th>
+			<th>writer</th>
+			<th>regdate</th>
+			<th>view</th>
+		</tr>
+		<c:forEach var="gesipan" items="${ls}">
+			<tr>
+				<td>${gesipan.num}</td>
+				<td>${gesipan.title}</td>
+				<td>${gesipan.writer}</td>
+				<td>${gesipan.regdate}</td>
+				<td>${gesipan.cnt}</td>
+			</tr>
+		</c:forEach>
+	</table>
+
+</body>
+</html>

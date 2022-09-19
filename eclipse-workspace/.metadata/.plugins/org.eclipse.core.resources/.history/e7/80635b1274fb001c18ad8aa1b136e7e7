@@ -1,0 +1,9 @@
+package test0704;
+
+public class Price { // 최상위 부모 클래스
+	int price;
+	
+	Price (int price) {
+		this.price = price;
+	}
+}
