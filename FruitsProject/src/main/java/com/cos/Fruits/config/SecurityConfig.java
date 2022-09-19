@@ -9,9 +9,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import com.cos.Fruits.config.auth.PrincipalDetailService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -19,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private PrincipalDetailService principalDetailService;
+	
+	
+	private final AuthenticationFailureHandler customFailureHandler;
 	
 	@Bean
 	public BCryptPasswordEncoder encodePWD() {
@@ -41,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.formLogin()
 			.loginPage("/auth/loginForm")
-			.loginProcessingUrl("/auth/loginProc")
-			.defaultSuccessUrl("/");
+			.loginProcessingUrl("/auth/loginProc")			
+			.defaultSuccessUrl("/")
+			.failureHandler(customFailureHandler);
 		
 //		http.logout().logoutUrl("/user/updateForm/{id}").logoutSuccessUrl("/auth/loginForm");
 	}
